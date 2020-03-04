@@ -1,0 +1,7 @@
+from ParkingLot import app
+from ParkingLot.models import *
+
+
+if __name__ == '__main__':
+
+    app.run(debug=True)
