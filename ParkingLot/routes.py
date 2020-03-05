@@ -6,10 +6,11 @@ from ParkingLot.models import *
 
 @app.before_request
 def before():
-
     if request.path == '/login':
         return None
     if request.path == '/checklogin':
+        return None
+    if request.path == '/reg':
         return None
     email = request.args.get("email")
     if email:
@@ -22,25 +23,30 @@ def before():
 @app.route('/')
 def root():
     user_email = session.get(request.args.get("email"))
-    return render_template("index.html",email = user_email)
+    return render_template("index.html", email=user_email)
+
 
 @app.route('/login')
 def login():
-
     return render_template("login.html")
 
-@app.route('/checklogin',methods=['POST'])
+
+@app.route('/checklogin', methods=['POST'])
 def checklogin():
-    print("I am checklogin")
     email = request.form.get("email")
     password = request.form.get("password")
-    user = User.query.filter_by(email = email).first()
+    user = User.query.filter_by(email=email).first()
 
     if user.password == password:
         session[user.email] = user.email
-        return redirect("/?email="+user.email)
+        return redirect("/?email=" + user.email)
     else:
         return redirect("/login")
+
+@app.route('/reg')
+def reg():
+    return render_template("reg.html")
+
 
 # @app.route('/info/', methods=['POST', 'GET'])
 # def info_page():
