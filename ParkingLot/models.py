@@ -1,86 +1,79 @@
 # coding: utf-8
 from ParkingLot import db
+from flask_login import UserMixin
+
+class Billing(db.Model):
+    __tablename__ = 'billing'
+
+    id = db.Column(db.Integer, primary_key=True)
+    total = db.Column(db.Float(255))
+    createTime = db.Column(db.DateTime)
+    finishTime = db.Column(db.DateTime)
+    status = db.Column(db.String(255))
+    description = db.Column(db.String(255))
+    userId = db.Column(db.ForeignKey('user.id'), index=True)
+
+    user = db.relationship('User', primaryjoin='Billing.userId == User.id', backref='billings')
 
 
-# class Product(db.Model):
-#     __tablename__ = 'product'
-#     Id = db.Column(db.INTEGER, primary_key=True)
-#     title = db.Column(db.String(255), nullable=False)
-#     group = db.Column(db.String(255), nullable=False)
-#     salesrank = db.Column(db.INTEGER, nullable=False)
-#     ASIN = db.Column(db.String(255), nullable=False)
-#     categories = db.relationship("Category", backref="product")
-#     items = db.relationship("Item", backref="product")
-#     reviews = db.relationship("Review", backref="product")
-#     similar = db.relationship("Similar", backref="product")
-#
-#     def __init__(self, Id, title, group, salesrank, ASIN):
-#         self.Id = Id
-#         self.title = title
-#         self.group = group
-#         self.salesrank = salesrank
-#         self.ASIN = ASIN
-#
-#     def __str__(self):
-#         return str(self.title) + '_' + str(self.group) + '_' + str(self.salesrank) + '_' + str(self.ASIN)
-#
-#     def __repr__(self):
-#         return '<Product %r>' % self.title
-#
-#
-# class Category(db.Model):
-#     __tablename__ = 'categories'
-#
-#     Id = db.Column(db.INTEGER, primary_key=True)
-#     name = db.Column(db.String(255), nullable=False)
-#     product_Id = db.Column(db.Integer, db.ForeignKey("product.Id"))
-#
-#     def __str__(self):
-#         return str(self.name)
-#
-#
-# class Item(db.Model):
-#     __tablename__ = 'items'
-#
-#     Id = db.Column(db.INTEGER, primary_key=True)
-#     product_Id = db.Column(db.Integer, db.ForeignKey("product.Id"))
-#     create_time = db.Column(db.DateTime)
-#     cutomer_Id = db.Column(db.String(255))
-#     rating = db.Column(db.INTEGER)
-#     votes = db.Column(db.INTEGER)
-#     helpful = db.Column(db.INTEGER)
-#
-#
-# class Review(db.Model):
-#     __tablename__ = 'reviews'
-#
-#     Id = db.Column(db.INTEGER, primary_key=True)
-#     product_Id = db.Column(db.Integer, db.ForeignKey("product.Id"))
-#     total = db.Column(db.INTEGER)
-#     downloaded = db.Column(db.INTEGER)
-#     avg_rating = db.Column(db.INTEGER)
-#
-#     def __str__(self):
-#         return str(self.Id) + '_' + str(self.product_Id) + '_' + str(self.total) + '_' + str(
-#             self.downloaded) + '_' + str(self.avg_rating)
-#
-#
-# class Similar(db.Model):
-#     __tablename__ = 'similar'
-#
-#     Id = db.Column(db.INTEGER, primary_key=True)
-#     product_Id = db.Column(db.Integer, db.ForeignKey("product.Id"))
-#     ASIN = db.Column(db.String(255), nullable=False)
-#
-#     def __str__(self):
-#         return str(self.product_Id)+" "+str(self.Id)+" "+str(self.ASIN)
-#
-# class Samples(db.Model):
-#     __tablename__ = 'samples'
-#
-#     product_Id = db.Column(db.INTEGER, primary_key=True)
-#     vector = db.Column(db.String(255), nullable=False)
-#     score = db.Column(db.INTEGER)
-#
-#     def __str__(self):
-#         return str(self.product_Id)+" "+str(self.vector)+" "+str(self.score)
+class Plate(db.Model):
+    __tablename__ = 'plate'
+
+    id = db.Column(db.Integer, primary_key=True)
+    plateNumber = db.Column(db.String(255))
+    registrationNumber = db.Column(db.String(255))
+    userId = db.Column(db.Integer)
+
+
+class Profile(db.Model):
+    __tablename__ = 'profile'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    email = db.Column(db.String(255))
+    birthday = db.Column(db.String(255))
+    userId = db.Column(db.ForeignKey('user.id'), index=True)
+
+    user = db.relationship('User', primaryjoin='Profile.userId == User.id', backref='profiles')
+
+
+class Reservation(db.Model):
+    __tablename__ = 'reservation'
+
+    id = db.Column(db.Integer, primary_key=True)
+    status = db.Column(db.String(255))
+    type = db.Column(db.String(255))
+    confirmNum = db.Column(db.Integer)
+    userId = db.Column(db.ForeignKey('user.id'), index=True)
+
+    user = db.relationship('User', primaryjoin='Reservation.userId == User.id', backref='reservations')
+
+
+class Spot(db.Model):
+    __tablename__ = 'spot'
+
+    id = db.Column(db.Integer, primary_key=True)
+    number = db.Column(db.String(255))
+    status = db.Column(db.String(255))
+
+
+class Transaction(db.Model):
+    __tablename__ = 'transaction'
+
+    id = db.Column(db.Integer, primary_key=True)
+    status = db.Column(db.String(255))
+    createTime = db.Column(db.DateTime)
+    endTime = db.Column(db.DateTime)
+    expectedDuration = db.Column(db.String(255))
+    userId = db.Column(db.ForeignKey('user.id'), index=True)
+
+    user = db.relationship('User', primaryjoin='Transaction.userId == User.id', backref='transactions')
+
+
+class User(db.Model):
+    __tablename__ = 'user'
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    type = db.Column(db.String(255))

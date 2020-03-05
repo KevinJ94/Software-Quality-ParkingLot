@@ -1,14 +1,46 @@
-from flask import render_template, url_for, redirect, request
+import json
+from flask import render_template, url_for, redirect, request, session
 from ParkingLot import app
-from ParkingLot import db
 from ParkingLot.models import *
 
+
+@app.before_request
+def before():
+
+    if request.path == '/login':
+        return None
+    if request.path == '/checklogin':
+        return None
+    email = request.args.get("email")
+    if email:
+        user = session.get(email)
+        if user:
+            return None
+    return redirect("/login")
 
 
 @app.route('/')
 def root():
-    return "Hello World"
+    user_email = session.get(request.args.get("email"))
+    return render_template("index.html",email = user_email)
 
+@app.route('/login')
+def login():
+
+    return render_template("login.html")
+
+@app.route('/checklogin',methods=['POST'])
+def checklogin():
+    print("I am checklogin")
+    email = request.form.get("email")
+    password = request.form.get("password")
+    user = User.query.filter_by(email = email).first()
+
+    if user.password == password:
+        session[user.email] = user.email
+        return redirect("/?email="+user.email)
+    else:
+        return redirect("/login")
 
 # @app.route('/info/', methods=['POST', 'GET'])
 # def info_page():
