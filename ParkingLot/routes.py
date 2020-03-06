@@ -1,7 +1,8 @@
 import json
 from flask import render_template, url_for, redirect, request, session
-from ParkingLot import app
+from ParkingLot import app,db
 from ParkingLot.models import *
+
 
 
 @app.before_request
@@ -43,9 +44,24 @@ def checklogin():
     else:
         return redirect("/login")
 
-@app.route('/reg')
+@app.route('/reg', methods=['GET','POST'])
 def reg():
-    return render_template("reg.html")
+    if request.method == "GET":
+        return render_template("reg.html")
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+        user = User()
+        user.email = email
+        user.password = password
+        user.type = '0'
+        try:
+            db.session.add(user)
+            db.session.commit()
+            return redirect("/login")
+        except:
+            return redirect("/reg")
+
 
 
 # @app.route('/info/', methods=['POST', 'GET'])

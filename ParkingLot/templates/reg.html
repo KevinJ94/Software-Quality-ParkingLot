@@ -7,6 +7,7 @@
 		<title></title>
 		<link href="../static/css/mui.min.css" rel="stylesheet" />
 		<link href="../static/css/style.css" rel="stylesheet" />
+
 		<style>
 			.area {
 				margin: 20px auto 0px auto;
@@ -42,14 +43,14 @@
 			<h1 class="mui-title">Sign up</h1>
 		</header>
 		<div class="mui-content">
-			<form class="mui-input-group">
+			<form id="reg-form" action="/reg" class="mui-input-group" method="post">
 				<div class="mui-input-row">
 					<label>Email</label>
-					<input id='email' type="email" class="mui-input-clear mui-input" placeholder="Please input email">
+					<input id='email' name="email" type="email" class="mui-input-clear mui-input" placeholder="Please input email">
 				</div>
 				<div class="mui-input-row">
 					<label>Password</label>
-					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="Please input password">
+					<input id='password' name="password" type="password" class="mui-input-clear mui-input" placeholder="Please input password">
 				</div>
 				<div class="mui-input-row">
 					<label>Confirm</label>
@@ -58,14 +59,16 @@
 
 			</form>
 			<div class="mui-content-padded">
-				<button id='reg' class="mui-btn mui-btn-block mui-btn-primary">Sign up</button>
+				<button id='reg' onclick="formSub()" class="mui-btn mui-btn-block mui-btn-primary">Sign up</button>
 			</div>
 
 		</div>
 		<script src="../static/js/mui.min.js"></script>
 		<script src="../static/js/app.js"></script>
 		<script>
-
+            function formSub() {
+                document.getElementById("reg-form").submit();
+            }
 		</script>
 	</body>
 
