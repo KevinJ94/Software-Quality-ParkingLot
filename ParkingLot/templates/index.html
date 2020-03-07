@@ -69,7 +69,7 @@
         <span class="mui-icon mui-icon-home"></span>
         <span class="mui-tab-label">Home</span>
     </a>
-    <a class="mui-tab-item" href="#tabbar-with-chat">
+    <a class="mui-tab-item" href="#tabbar-reservation">
         <span class="mui-icon mui-icon-email"><span class="mui-badge">9</span></span>
         <span class="mui-tab-label">Reservation</span>
     </a>
@@ -85,26 +85,43 @@
 <div class="mui-content">
     <div id="tabbar" class="mui-control-content mui-active">
         <div id="mid" >
+            <div class="mui-content-padded " >
+                <a href="makeReservation.html">
+                    <button type="button" class="mui-btn mui-btn-primary mui-btn-block">Make Reservation</button>
+                </a>
+            </div>
             <div class="mui-content-padded ">
                 <button type="button" class="mui-btn mui-btn-primary mui-btn-block">Arrive</button>
             </div>
+            <div class="mui-content-padded ">
+                <button type="button" class="mui-btn mui-btn-primary mui-btn-block">Departure</button>
+            </div>
         </div>
-
-
     </div>
-    <div id="tabbar-with-chat" class="mui-control-content">
 
-
-        <ul class="mui-table-view mui-table-view-chevron">
-            <li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 1</a></li>
-            <li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 2</a></li>
-            <li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 3</a></li>
-            <li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 4</a></li>
-            <li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 5</a></li>
-
-        </ul>
-
+    <div id="tabbar-reservation" class="mui-control-content">
+        <div class="mui-card">
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell mui-collapse">
+                    <a class="mui-navigate-right" href="#">Reservation 1</a>
+                    <div class="mui-collapse-content">
+                        <form class="mui-input-group">
+                            <div class="mui-input-row">
+                                start time:
+                            </div>
+                            <div class="mui-input-row">
+                                end time:
+                            </div>
+                            <div class="mui-button-row">
+                                <button class="mui-btn mui-btn-primary" type="button" onclick="return true;">cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
+
     <div id="tabbar-with-contact" class="mui-control-content">
         <div class="title"></div>
         <ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
@@ -118,10 +135,8 @@
                             <div class="mui-clearfix">
                                 <h4 class="oa-contact-name">March 2020 </h4>
                                 <span class="mui-badge mui-badge-primary">status</span>
-{#                                <span class="oa-contact-position mui-h4">2020</span>#}
                             </div>
                             <p class="oa-contact-email mui-h6">
-
                             </p>
                         </div>
                     </div>
@@ -134,22 +149,22 @@
 
         <ul class="mui-table-view">
             <li class="mui-table-view-cell">
-                <a class="mui-navigate-right">
+                <a class="mui-navigate-right" href="profile.html">
                     Profile
                 </a>
             </li>
             <li class="mui-table-view-cell">
-                <a class="mui-navigate-right">
+                <a class="mui-navigate-right" href="plate.html">
                     MyPlate
                 </a>
             </li>
             <li class="mui-table-view-cell">
-                <a class="mui-navigate-right">
+                <a class="mui-navigate-right" href="contract.html">
                     Contract
                 </a>
             </li>
             <li class="mui-table-view-cell">
-                <a class="mui-navigate-right">
+                <a class="mui-navigate-right" href="transaction.html">
                     MyTransactions
                 </a>
             </li>
@@ -166,9 +181,7 @@
 </div>
 </body>
 <script src="../static/js/mui.min.js"></script>
-{#	<script>#}
-{#		mui.init({#}
-{#			swipeBack:true //启用右滑关闭功能#}
-{#		});#}
-{#	</script>#}
+<script>
+
+</script>
 </html>
