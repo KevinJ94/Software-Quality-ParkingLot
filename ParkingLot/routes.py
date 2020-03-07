@@ -1,24 +1,23 @@
 import json
 from flask import render_template, url_for, redirect, request, session
-from ParkingLot import app,db
+from ParkingLot import app, db
 from ParkingLot.models import *
 
 
-
-@app.before_request
-def before():
-    if request.path == '/login':
-        return None
-    if request.path == '/checklogin':
-        return None
-    if request.path == '/reg':
-        return None
-    email = request.args.get("email")
-    if email:
-        user = session.get(email)
-        if user:
-            return None
-    return redirect("/login")
+# @app.before_request
+# def before():
+#     if request.path == '/login':
+#         return None
+#     if request.path == '/checklogin':
+#         return None
+#     if request.path == '/reg':
+#         return None
+#     email = request.args.get("email")
+#     if email:
+#         user = session.get(email)
+#         if user:
+#             return None
+#     return redirect("/login")
 
 
 @app.route('/')
@@ -44,7 +43,8 @@ def checklogin():
     else:
         return redirect("/login")
 
-@app.route('/reg', methods=['GET','POST'])
+
+@app.route('/reg', methods=['GET', 'POST'])
 def reg():
     if request.method == "GET":
         return render_template("reg.html")
@@ -55,12 +55,33 @@ def reg():
         user.email = email
         user.password = password
         user.type = '0'
+        print(user.email, user.password, user.type)
         try:
             db.session.add(user)
             db.session.commit()
             return redirect("/login")
         except:
             return redirect("/reg")
+
+
+@app.route('/makeReservation', methods=['GET', 'POST'])
+def makeReservation():
+    pass
+
+
+@app.route('/reservation', methods=['GET', 'POST'])
+def reservation():
+    return redirect("/?email=" + user.email)
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    return redirect("/?email=" + user.email)
+
+
+@app.route('/plate', methods=['GET', 'POST'])
+def plate():
+    return redirect("/?email=" + user.email)
 
 
 

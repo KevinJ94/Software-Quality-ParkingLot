@@ -1,6 +1,12 @@
 # coding: utf-8
-from ParkingLot import db
-from flask_login import UserMixin
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
+from flask_sqlalchemy import SQLAlchemy
+
+
+db = SQLAlchemy()
+
+
 
 class Billing(db.Model):
     __tablename__ = 'billing'
@@ -16,6 +22,7 @@ class Billing(db.Model):
     user = db.relationship('User', primaryjoin='Billing.userId == User.id', backref='billings')
 
 
+
 class Plate(db.Model):
     __tablename__ = 'plate'
 
@@ -23,6 +30,7 @@ class Plate(db.Model):
     plateNumber = db.Column(db.String(255))
     registrationNumber = db.Column(db.String(255))
     userId = db.Column(db.Integer)
+
 
 
 class Profile(db.Model):
@@ -37,6 +45,7 @@ class Profile(db.Model):
     user = db.relationship('User', primaryjoin='Profile.userId == User.id', backref='profiles')
 
 
+
 class Reservation(db.Model):
     __tablename__ = 'reservation'
 
@@ -45,8 +54,11 @@ class Reservation(db.Model):
     type = db.Column(db.String(255))
     confirmNum = db.Column(db.Integer)
     userId = db.Column(db.ForeignKey('user.id'), index=True)
+    startTime = db.Column(db.DateTime)
+    endTime = db.Column(db.DateTime)
 
     user = db.relationship('User', primaryjoin='Reservation.userId == User.id', backref='reservations')
+
 
 
 class Spot(db.Model):
@@ -55,6 +67,7 @@ class Spot(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.String(255))
     status = db.Column(db.String(255))
+
 
 
 class Transaction(db.Model):
@@ -68,6 +81,7 @@ class Transaction(db.Model):
     userId = db.Column(db.ForeignKey('user.id'), index=True)
 
     user = db.relationship('User', primaryjoin='Transaction.userId == User.id', backref='transactions')
+
 
 
 class User(db.Model):
