@@ -43,7 +43,8 @@
 			<h1 class="mui-title">Reservation</h1>
 		</header>
 		<div class="mui-content">
-			<form id='res-form' action="/makeReservation" class="mui-input-group" method="post">
+			<form id='res-form' action="/makeRes" class="mui-input-group" method="post">
+                <input type="hidden" id="email" name="email" value="{{ email }}" >
                 <div class="mui-input-row">
 					<label>Start</label>
 					<input id='start' name="start" type="datetime-local" value="2020-01-01T00:00:00">

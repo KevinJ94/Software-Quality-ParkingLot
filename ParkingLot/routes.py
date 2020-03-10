@@ -1,4 +1,6 @@
 import json
+import random
+
 from flask import render_template, url_for, redirect, request, session
 from ParkingLot import app, db
 from ParkingLot.models import *
@@ -23,11 +25,21 @@ from ParkingLot.models import *
 @app.route('/')
 def root():
     user_email = session.get(request.args.get("email"))
-    return render_template("index.html", email=user_email)
+    if user_email:
+        #user = User.query.filter_by(email=user_email).first()
+        res_list = Reservation.query.join(User).filter(User.email == user_email).all()
+        return render_template("index.html", email=user_email, reslist=res_list)
+    else:
+        return render_template("login.html")
 
 
 @app.route('/login')
 def login():
+    return render_template("login.html")
+
+@app.route('/logout')
+def logout():
+    session.clear()
     return render_template("login.html")
 
 
@@ -64,24 +76,46 @@ def reg():
             return redirect("/reg")
 
 
-@app.route('/makeReservation', methods=['GET', 'POST'])
+@app.route('/makeRes', methods=['GET', 'POST'])
 def makeReservation():
-    pass
+    if request.method == "GET":
+        email = request.args.get("email")
+        return render_template("makeReservation.html",email=email)
+    if request.method == "POST":
+        email = request.form.get("email")
+        start = request.form.get("start")
+        end = request.form.get("end")
+        user = User.query.filter_by(email=email).first()
+        res = Reservation()
+        res.user = user
+        res.startTime = start
+        res.endTime = end
+        res.status = "Confirmed"
+        res.type = "Normal"
+        res.confirmNum = random.randint(0,1000)
+        db.session.add(res)
+        db.session.commit()
+        return render_template("index.html")
 
 
-@app.route('/reservation', methods=['GET', 'POST'])
-def reservation():
-    return redirect("/?email=" + user.email)
+
+@app.route('/transaction', methods=['GET', 'POST'])
+def transaction():
+    return render_template("transaction.html")
 
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
-    return redirect("/?email=" + user.email)
+    return render_template("profile.html")
 
 
 @app.route('/plate', methods=['GET', 'POST'])
 def plate():
-    return redirect("/?email=" + user.email)
+    if request.method == "GET":
+        email = request.args.get("email")
+        return render_template("plate.html",email = email)
+    if request.method == "POST":
+        pass
 
 
 

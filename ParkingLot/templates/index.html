@@ -51,11 +51,7 @@
         .mui-badge{
             float: right;
         }
-        #mid {
 
-            margin-top: 100%;
-            margin-bottom: 50%;
-        }
     </style>
 </head>
 
@@ -70,7 +66,9 @@
         <span class="mui-tab-label">Home</span>
     </a>
     <a class="mui-tab-item" href="#tabbar-reservation">
-        <span class="mui-icon mui-icon-email"><span class="mui-badge">9</span></span>
+        <span class="mui-icon mui-icon-email">
+{#            <span class="mui-badge">9</span>#}
+        </span>
         <span class="mui-tab-label">Reservation</span>
     </a>
     <a class="mui-tab-item" href="#tabbar-with-contact">
@@ -85,39 +83,48 @@
 <div class="mui-content">
     <div id="tabbar" class="mui-control-content mui-active">
         <div id="mid" >
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             <div class="mui-content-padded " >
-                <a href="makeReservation.html">
+                <a href="/makeRes?email={{ email }}">
                     <button type="button" class="mui-btn mui-btn-primary mui-btn-block">Make Reservation</button>
                 </a>
             </div>
             <div class="mui-content-padded ">
-                <button type="button" class="mui-btn mui-btn-primary mui-btn-block">Arrive</button>
-            </div>
-            <div class="mui-content-padded ">
-                <button type="button" class="mui-btn mui-btn-primary mui-btn-block">Departure</button>
+                <button type="button" class="mui-btn mui-btn-green mui-btn-block">Arrive</button>
             </div>
         </div>
     </div>
 
     <div id="tabbar-reservation" class="mui-control-content">
+        <br>
         <div class="mui-card">
             <ul class="mui-table-view">
+
+                {% for res in reslist %}
                 <li class="mui-table-view-cell mui-collapse">
-                    <a class="mui-navigate-right" href="#">Reservation 1</a>
+                    <a class="mui-navigate-right" href="#">Reservation {{ res.id }}</a>
                     <div class="mui-collapse-content">
-                        <form class="mui-input-group">
-                            <div class="mui-input-row">
-                                start time:
+                        <div class="mui-input-group">
+                            <div class="mui-content-padded ">
+                                Start Time: {{ res.startTime }}
                             </div>
-                            <div class="mui-input-row">
-                                end time:
+                            <div class="mui-content-padded ">
+                                End Time: {{ res.endTime }}
+                            </div>
+                            <div class="mui-content-padded ">
+                                status: {{ res.status }}
+                            </div>
+                            <div class="mui-content-padded ">
+                                confirmNum: {{ res.confirmNum }}
                             </div>
                             <div class="mui-button-row">
                                 <button class="mui-btn mui-btn-primary" type="button" onclick="return true;">cancel</button>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </li>
+                {% endfor %}
+
             </ul>
         </div>
     </div>
@@ -148,22 +155,22 @@
 
         <ul class="mui-table-view">
             <li class="mui-table-view-cell">
-                <a class="mui-navigate-right" href="profile.html">
+                <a class="mui-navigate-right" href="/profile">
                     Profile
                 </a>
             </li>
             <li class="mui-table-view-cell">
-                <a class="mui-navigate-right" href="plate.html">
+                <a class="mui-navigate-right" href="/plate?email={{ email }}">
                     MyPlate
                 </a>
             </li>
             <li class="mui-table-view-cell">
-                <a class="mui-navigate-right" href="contract.html">
+                <a class="mui-navigate-right" href="/contract">
                     Contract
                 </a>
             </li>
             <li class="mui-table-view-cell">
-                <a class="mui-navigate-right" href="transaction.html">
+                <a class="mui-navigate-right" href="/transaction">
                     MyTransactions
                 </a>
             </li>
@@ -171,7 +178,7 @@
 
         <ul class="mui-table-view" style="margin-top: 25px;">
             <li class="mui-table-view-cell">
-                <a style="text-align: center;color: #FF3B30;">
+                <a href="/logout" style="text-align: center;color: #FF3B30;">
                     Sign out
                 </a>
             </li>

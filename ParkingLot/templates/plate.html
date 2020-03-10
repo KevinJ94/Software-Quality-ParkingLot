@@ -40,12 +40,13 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">Plate</h1>
+			<h1 class="mui-title">{{email}}</h1>
 		</header>
 		<div class="mui-content">
-			<form id="plate-form" action="/profile" class="mui-input-group" method="post">
-				<div class="mui-input-row">
-					<label>Plate Number</label>
+			<form id="plate-form" action="/plate" class="mui-input-group" method="post">
+				<input type="hidden" id="email" name="email" value="{{ email }}" >
+                <div class="mui-input-row">
+					<label>Plate</label>
 					<input id='plateNum' name="plateNum" type="text" class="mui-input-clear mui-input" placeholder="Please input plate number">
 				</div>
 
