@@ -169,7 +169,7 @@ def plate():
             plate.userId = user.id
             db.session.add(plate)
             db.session.commit()
-        return render_template("index.html",email = email)
+        return redirect("/?email=" + user.email)
 
 @app.route('/cancel', methods=['GET', 'POST'])
 def cancel():
@@ -195,3 +195,11 @@ def depart():
     user.isArrive = 0
     db.session.commit()
     return redirect("/?email="+email)
+
+@app.route('/admin')
+def admin():
+   return render_template("admin.html")
+
+@app.route('/admin_login')
+def admin_login():
+   return render_template("admin_login.html")
