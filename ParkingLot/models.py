@@ -22,7 +22,6 @@ class Billing(db.Model):
     user = db.relationship('User', primaryjoin='Billing.userId == User.id', backref='billings')
 
 
-
 class Plate(db.Model):
     __tablename__ = 'plate'
 
@@ -32,18 +31,16 @@ class Plate(db.Model):
     userId = db.Column(db.Integer)
 
 
-
 class Profile(db.Model):
     __tablename__ = 'profile'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     email = db.Column(db.String(255))
-    birthday = db.Column(db.String(255))
+    birthday = db.Column(db.DateTime)
     userId = db.Column(db.ForeignKey('user.id'), index=True)
 
     user = db.relationship('User', primaryjoin='Profile.userId == User.id', backref='profiles')
-
 
 
 class Reservation(db.Model):
@@ -60,14 +57,12 @@ class Reservation(db.Model):
     user = db.relationship('User', primaryjoin='Reservation.userId == User.id', backref='reservations')
 
 
-
 class Spot(db.Model):
     __tablename__ = 'spot'
 
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.String(255))
     status = db.Column(db.String(255))
-
 
 
 class Transaction(db.Model):
@@ -81,7 +76,6 @@ class Transaction(db.Model):
     userId = db.Column(db.ForeignKey('user.id'), index=True)
 
     user = db.relationship('User', primaryjoin='Transaction.userId == User.id', backref='transactions')
-
 
 
 class User(db.Model):

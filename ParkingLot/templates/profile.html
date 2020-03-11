@@ -1,71 +1,106 @@
 <!DOCTYPE html>
 <html class="ui-page-login">
 
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title></title>
-		<link href="../static/css/mui.min.css" rel="stylesheet" />
-		<link href="../static/css/style.css" rel="stylesheet" />
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title></title>
+    <link href="../static/css/mui.min.css" rel="stylesheet"/>
+    <link href="../static/css/style.css" rel="stylesheet"/>
 
-		<style>
-			.area {
-				margin: 20px auto 0px auto;
-			}
-			.mui-input-group:first-child {
-				margin-top: 20px;
-			}
-			.mui-input-group label {
-				width: 22%;
-			}
-			.mui-input-row label~input,
-			.mui-input-row label~select,
-			.mui-input-row label~textarea {
-				width: 78%;
-			}
-			.mui-checkbox input[type=checkbox],
-			.mui-radio input[type=radio] {
-				top: 6px;
-			}
-			.mui-content-padded {
-				margin-top: 25px;
-			}
-			.mui-btn {
-				padding: 10px;
-			}
+    <style>
+        .area {
+            margin: 20px auto 0px auto;
+        }
 
-		</style>
-	</head>
+        .mui-input-group:first-child {
+            margin-top: 20px;
+        }
 
-	<body>
-		<header class="mui-bar mui-bar-nav">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">Profile</h1>
-		</header>
-		<div class="mui-content">
-			<form id="profile-form" action="/profile" class="mui-input-group" method="post">
-				<div class="mui-input-row">
-					<label>Email</label>
-					<input id='name' name="name" type="text" class="mui-input-clear mui-input" placeholder="Please input name">
-				</div>
-				<div class="mui-input-row">
-					<label>Password</label>
-					<input id='birthday' name="birthday" type="date" class="mui-input-clear mui-input" placeholder="Please input birthday">
-				</div>
+        .mui-input-group label {
+            width: 22%;
+        }
 
-			</form>
-			<div class="mui-content-padded">
-				<button id='profile' onclick="formSub()" class="mui-btn mui-btn-block mui-btn-primary">Submit</button>
-			</div>
+        .mui-input-row label ~ input,
+        .mui-input-row label ~ select,
+        .mui-input-row label ~ textarea {
+            width: 78%;
+        }
 
-		</div>
-		<script src="../static/js/mui.min.js"></script>
-		<script src="../static/js/app.js"></script>
-		<script>
-            function formSub() {
-                document.getElementById("profile-form").submit();
-            }
-		</script>
-	</body>
+        .mui-checkbox input[type=checkbox],
+        .mui-radio input[type=radio] {
+            top: 6px;
+        }
+
+        .mui-content-padded {
+            margin-top: 25px;
+        }
+
+        .mui-btn {
+            padding: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">{{ email }}</h1>
+</header>
+<div class="mui-content">
+    <form id="profile-form" action="/profile" class="mui-input-group" method="post">
+        {% if profile %}
+            <div class="mui-input-row">
+                <label>Name</label>
+                <input id='name' name="name" type="text" class="mui-input-clear mui-input"
+                       value="{{ profile.name }}">
+            </div>
+            <div class="mui-input-row">
+                <label>Email</label>
+                <input id='email' name="email" type="text" class="mui-input-clear mui-input"
+                       value="{{ profile.email }}">
+            </div>
+            <div class="mui-input-row">
+                <label>Birthday</label>
+                <input id='birthday' name="birthday" type="date" class="mui-input-clear mui-input"
+                       value="{{ profile.birthday }}">
+            </div>
+
+        {% else %}
+            <div class="mui-input-row">
+                <label>Name</label>
+                <input id='name' name="name" type="text" class="mui-input-clear mui-input"
+                       placeholder="Please input name">
+            </div>
+            <div class="mui-input-row">
+                <label>Email</label>
+                <input id='email' name="email" type="text" class="mui-input-clear mui-input"
+                       value="{{ email }}">
+            </div>
+            <div class="mui-input-row">
+                <label>Birthday</label>
+                <input id='birthday' name="birthday" type="date" class="mui-input-clear mui-input"
+                       >
+            </div>
+        {% endif %}
+
+
+    </form>
+    <div class="mui-content-padded">
+        <button id='profile' onclick="formSub()" class="mui-btn mui-btn-block mui-btn-primary">Submit</button>
+    </div>
+
+</div>
+<script src="../static/js/mui.min.js"></script>
+<script src="../static/js/app.js"></script>
+<script>
+
+    function formSub() {
+        document.getElementById("profile-form").submit();
+    }
+</script>
+</body>
 
 </html>

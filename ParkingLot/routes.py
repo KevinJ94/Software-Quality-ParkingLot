@@ -106,16 +106,64 @@ def transaction():
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
-    return render_template("profile.html")
+    if request.method == "GET":
+
+        email = request.args.get("email")
+        user = User.query.filter_by(email=email).first()
+        profile = Profile.query.filter_by(userId=user.id).first()
+        profile.birthday = profile.birthday.strftime("%Y-%m-%d")
+
+        return render_template("profile.html", email=email , profile= profile)
+
+    if request.method == "POST":
+        email = request.form.get("email")
+        name = request.form.get("name")
+        birthday = request.form.get("birthday")
+        user = User.query.filter_by(email=email).first()
+        profile = Profile.query.filter_by(userId=user.id).first()
+        if profile:
+            profile.user = user
+            profile.email = email
+            profile.name = name
+            profile.birthday = birthday
+            db.session.commit()
+        else:
+            profile = Profile()
+            profile.user = user
+            profile.email = email
+            profile.name = name
+            profile.birthday = birthday
+            db.session.add(profile)
+            db.session.commit()
+        return render_template("index.html",email = email)
+
 
 
 @app.route('/plate', methods=['GET', 'POST'])
 def plate():
     if request.method == "GET":
+
         email = request.args.get("email")
-        return render_template("plate.html",email = email)
+        user = User.query.filter_by(email=email).first()
+        plate = Plate.query.filter_by(userId=user.id).first()
+        return render_template("plate.html", email=email , plate= plate)
+
     if request.method == "POST":
-        pass
+        email = request.form.get("email")
+        plate_num = request.form.get("plateNum")
+        user = User.query.filter_by(email=email).first()
+        plate = Plate.query.filter_by(userId=user.id).first()
+        if plate:
+            plate.plateNumber = plate_num
+            plate.userId = user.id
+            db.session.commit()
+        else:
+            plate = Plate()
+            plate.plateNumber = plate_num
+            plate.userId = user.id
+            db.session.add(plate)
+            db.session.commit()
+        return render_template("index.html",email = email)
 
 
 

@@ -47,7 +47,13 @@
 				<input type="hidden" id="email" name="email" value="{{ email }}" >
                 <div class="mui-input-row">
 					<label>Plate</label>
-					<input id='plateNum' name="plateNum" type="text" class="mui-input-clear mui-input" placeholder="Please input plate number">
+                    {% if plate %}
+                        <input id='plateNum' name="plateNum" type="text" class="mui-input-clear mui-input" value="{{ plate.plateNumber }}">
+                    {% else %}
+                        <input id='plateNum' name="plateNum" type="text" class="mui-input-clear mui-input" placeholder="Please input plate number">
+                    {% endif %}
+
+
 				</div>
 
 			</form>
