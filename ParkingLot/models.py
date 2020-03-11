@@ -85,3 +85,4 @@ class User(db.Model):
     email = db.Column(db.String(255), nullable=False)
     password = db.Column(db.String(255), nullable=False)
     type = db.Column(db.String(255))
+    isArrive = db.Column(db.Integer)

@@ -25,10 +25,15 @@ from ParkingLot.models import *
 @app.route('/')
 def root():
     user_email = session.get(request.args.get("email"))
+    user = User.query.filter_by(email=user_email).first()
     if user_email:
-        #user = User.query.filter_by(email=user_email).first()
         res_list = Reservation.query.join(User).filter(User.email == user_email).all()
-        return render_template("index.html", email=user_email, reslist=res_list)
+        can_res = True
+        for res in res_list:
+            if res.status == "Confirmed":
+                can_res = False
+                break
+        return render_template("index.html", email=user_email, reslist=res_list,user =user,canres = can_res)
     else:
         return render_template("login.html")
 
@@ -67,6 +72,7 @@ def reg():
         user.email = email
         user.password = password
         user.type = '0'
+        user.isArrive = 0
         print(user.email, user.password, user.type)
         try:
             db.session.add(user)
@@ -95,7 +101,7 @@ def makeReservation():
         res.confirmNum = random.randint(0,1000)
         db.session.add(res)
         db.session.commit()
-        return render_template("index.html")
+        return redirect("/?email=" + user.email)
 
 
 
@@ -135,7 +141,7 @@ def profile():
             profile.birthday = birthday
             db.session.add(profile)
             db.session.commit()
-        return render_template("index.html",email = email)
+        return redirect("/?email=" + user.email)
 
 
 
@@ -165,77 +171,27 @@ def plate():
             db.session.commit()
         return render_template("index.html",email = email)
 
+@app.route('/cancel', methods=['GET', 'POST'])
+def cancel():
+    email = request.args.get("email")
+    res_id = request.args.get("resid")
+    res = Reservation.query.filter_by(id=res_id).first()
+    res.status = "Canceled"
+    db.session.commit()
+    return redirect("/?email="+email)
 
+@app.route('/arrive', methods=['GET', 'POST'])
+def arrive():
+    email = request.args.get("email")
+    user = User.query.filter_by(email=email).first()
+    user.isArrive = 1
+    db.session.commit()
+    return redirect("/?email="+email)
 
-# @app.route('/info/', methods=['POST', 'GET'])
-# def info_page():
-#     group = request.args.get("group")
-#     key = request.args.get("key")
-#     page = int(request.args.get("page"))
-#     avg_rate = int(request.args.get("avg_rate"))
-#     if key == '':
-#         if group == 'All':
-#
-#             paginate = Product.query \
-#                 .join(Review) \
-#                 .filter(Review.avg_rating >= avg_rate) \
-#                 .paginate(page, 20, error_out=False)
-#         else:
-#
-#             paginate = Product.query \
-#                 .join(Review) \
-#                 .filter(Product.group == group) \
-#                 .filter(Review.avg_rating >= avg_rate) \
-#                 .paginate(page, 20, error_out=False)
-#     else:
-#         if group == 'All':
-#
-#             paginate = Product.query \
-#                 .join(Review) \
-#                 .filter(Product.title.like('%' + key + '%')) \
-#                 .filter(Review.avg_rating >= avg_rate) \
-#                 .paginate(page, 20, error_out=False)
-#         else:
-#
-#             paginate = Product.query \
-#                 .join(Review). \
-#                 filter(Product.title.like('%' + key + '%')) \
-#                 .filter(Product.group == group) \
-#                 .filter(Review.avg_rating >= avg_rate) \
-#                 .paginate(page, 20, error_out=False)
-#
-#     products = paginate.items
-#
-#     return render_template('information.html', paginate=paginate, products=products, group=group,
-#                            key=key, page=page, avg_rate=avg_rate)
-#
-#
-# @app.route('/search', methods=['GET', 'POST'])
-# def search_page():
-#     data = request.args.to_dict()
-#     # form = SearchForm()
-#     # if form.validate_on_submit():
-#     #     return redirect(url_for('info_page'), code=307)
-#     return render_template('search.html', title='Search', result_json=data)
-#
-#
-# @app.route('/detail', methods=['GET'])
-# def show_detail():
-#     product_id = request.args['product_id']
-#
-#     product = Product.query.filter_by(Id=product_id).first()
-#
-#     similars, similar_products = [], []
-#
-#     for similar in product.similar:
-#         similars.append(
-#             Product.query.filter_by(ASIN=similar.ASIN).first()
-#         )
-#
-#     for similar in similars:
-#         if similar:
-#             similar_products.append(similar)
-#
-#     return render_template('detail.html', product=product, similar_products=similar_products)
-#
-#
+@app.route('/depart', methods=['GET', 'POST'])
+def depart():
+    email = request.args.get("email")
+    user = User.query.filter_by(email=email).first()
+    user.isArrive = 0
+    db.session.commit()
+    return redirect("/?email="+email)

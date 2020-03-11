@@ -48,7 +48,8 @@
         .oa-contact-name, oa-contact-position {
             float: left;
         }
-        .mui-badge{
+
+        .mui-badge {
             float: right;
         }
 
@@ -82,16 +83,36 @@
 </nav>
 <div class="mui-content">
     <div id="tabbar" class="mui-control-content mui-active">
-        <div id="mid" >
+        <div id="mid">
             <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-            <div class="mui-content-padded " >
-                <a href="/makeRes?email={{ email }}">
-                    <button type="button" class="mui-btn mui-btn-primary mui-btn-block">Make Reservation</button>
-                </a>
-            </div>
-            <div class="mui-content-padded ">
-                <button type="button" class="mui-btn mui-btn-green mui-btn-block">Arrive</button>
-            </div>
+            {% if user.isArrive == 0 %}
+                {% if canres %}
+                    <div class="mui-content-padded ">
+                    <a href="/makeRes?email={{ email }}">
+                        <button type="button" class="mui-btn mui-btn-primary mui-btn-block">Make Reservation</button>
+                    </a>
+                </div>
+                {% else %}
+                    <div class="mui-content-padded ">
+                     <button type="button" disabled="disabled" class="mui-btn mui-btn-primary mui-btn-block">Please Check Your Reservation</button>
+
+                    </div>
+
+                {% endif %}
+
+
+                <div class="mui-content-padded ">
+                    <button type="button" class="mui-btn mui-btn-green mui-btn-block"
+                            onclick="location.href='/arrive?email={{ email }}'">Arrive
+                    </button>
+                </div>
+            {% else %}
+                <div class="mui-content-padded ">
+                    <button type="button" class="mui-btn mui-btn-red mui-btn-block"
+                            onclick="location.href='/depart?email={{ email }}'">Depart
+                    </button>
+                </div>
+            {% endif %}
         </div>
     </div>
 
@@ -101,28 +122,41 @@
             <ul class="mui-table-view">
 
                 {% for res in reslist %}
-                <li class="mui-table-view-cell mui-collapse">
-                    <a class="mui-navigate-right" href="#">Reservation {{ res.id }}</a>
-                    <div class="mui-collapse-content">
-                        <div class="mui-input-group">
-                            <div class="mui-content-padded ">
-                                Start Time: {{ res.startTime }}
-                            </div>
-                            <div class="mui-content-padded ">
-                                End Time: {{ res.endTime }}
-                            </div>
-                            <div class="mui-content-padded ">
-                                status: {{ res.status }}
-                            </div>
-                            <div class="mui-content-padded ">
-                                confirmNum: {{ res.confirmNum }}
-                            </div>
-                            <div class="mui-button-row">
-                                <button class="mui-btn mui-btn-primary" type="button" onclick="return true;">cancel</button>
+                    <li class="mui-table-view-cell mui-collapse">
+                    {% if res.status == "Confirmed" %}
+                        <a class="mui-navigate-right" href="#">Reservation {{ res.id }}<span class="mui-badge mui-badge-danger">{{ res.status }}</span></a>
+                    {% else %}
+                        <a class="mui-navigate-right" href="#">Reservation {{ res.id }}<span class="mui-badge mui-badge-primary">{{res.status}}</span></a>
+                    {% endif %}
+
+                        <div class="mui-collapse-content">
+                            <div class="mui-input-group">
+                                <div class="mui-content-padded ">
+                                    Start Time: {{ res.startTime }}
+                                </div>
+                                <div class="mui-content-padded ">
+                                    End Time: {{ res.endTime }}
+                                </div>
+                                <div class="mui-content-padded ">
+                                    status: {{ res.status }}
+                                </div>
+                                <div class="mui-content-padded ">
+                                    confirmNum: {{ res.confirmNum }}
+                                </div>
+                                {% if res.status == "Canceled" %}
+
+                                {% else %}
+                                    <div class="mui-button-row">
+                                        <button class="mui-btn mui-btn-primary" type="button"
+                                                onclick="location.href='/cancel?email={{ email }}&resid={{ res.id }}'">
+                                            cancel
+                                        </button>
+                                    </div>
+                                {% endif %}
+
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
                 {% endfor %}
 
             </ul>
@@ -188,6 +222,8 @@
 </body>
 <script src="../static/js/mui.min.js"></script>
 <script>
-
+    function formSub() {
+        document.getElementById("profile-form").submit();
+    }
 </script>
 </html>
