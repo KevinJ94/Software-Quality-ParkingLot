@@ -244,8 +244,15 @@ def depart():
 def admin():
     user_email = session.get(request.args.get("email"))
     user = User.query.filter_by(email=user_email).first()
+    home = Home()
+    home.user_number = len(User.query.all())
+    home.free_spot = len(Spot.query.filter_by(status="empty").all())
+    home.reserved_spot = len(Spot.query.filter_by(status="reserved").all())
+    home.occupied_spot = len(Spot.query.filter_by(status="occupied").all())
+
+
     if user_email:
-        return render_template("admin.html", email=user_email)
+        return render_template("admin.html", email=user_email,home = home)
     else:
         return render_template("admin_login.html")
 

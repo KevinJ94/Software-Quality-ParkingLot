@@ -52,7 +52,7 @@
             {#	</nav>#}
             <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
                 <ul class="cl">
-                    <li>{{email}}</li>
+                    <li>{{ email }}</li>
                     <li class="dropDown dropDown_hover"><a href="#" class="dropDown_A">admin <i class="Hui-iconfont">&#xe6d5;</i></a>
                         <ul class="dropDown-menu menu radius box-shadow">
                             {#							<li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>#}
@@ -87,21 +87,21 @@
             </dt>
             <dd>
                 <ul>
-                    <li><a href="article-list.html" title="User Management">User Management</a></li>
+                    <li><a href="/admin?email={{ email }}" title="Home">Home</a></li>
                 </ul>
                 <ul>
                     <li><a href="/spots?email={{ email }}" title="Spots Management">Spots Management</a></li>
                 </ul>
             </dd>
         </dl>
-{#        <dl id="menu-picture">#}
-{#            <dt><i class="Hui-iconfont">&#xe613;</i> 图片管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>#}
-{#            <dd>#}
-{#                <ul>#}
-{#                    <li><a href="picture-list.html" title="图片管理">图片管理</a></li>#}
-{#                </ul>#}
-{#            </dd>#}
-{#        </dl>#}
+        {#        <dl id="menu-picture">#}
+        {#            <dt><i class="Hui-iconfont">&#xe613;</i> 图片管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>#}
+        {#            <dd>#}
+        {#                <ul>#}
+        {#                    <li><a href="picture-list.html" title="图片管理">图片管理</a></li>#}
+        {#                </ul>#}
+        {#            </dd>#}
+        {#        </dl>#}
 
     </div>
 </aside>
@@ -122,36 +122,28 @@
             <table class="table table-border table-bordered table-bg">
                 <thead>
                 <tr>
-                    <th colspan="7" scope="col">信息统计</th>
+                    <th colspan="7" scope="col">Info</th>
                 </tr>
                 <tr class="text-c">
-                    <th>统计</th>
-                    <th>资讯库</th>
-                    <th>图片库</th>
-                    <th>产品库</th>
-                    <th>用户</th>
-                    <th>管理员</th>
+                    <th>User Number</th>
+                    <th>Free Spots</th>
+                    <th>Occupied Spots</th>
+                    <th>Reserved Spots</th>
+
                 </tr>
                 </thead>
                 <tbody>
                 <tr class="text-c">
-                    <td>总数</td>
-                    <td>92</td>
-                    <td>9</td>
-                    <td>0</td>
-                    <td>8</td>
-                    <td>20</td>
-                </tr>
-                <tr class="text-c">
-                    <td>今日</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
+                    <td>{{ home.user_number }}</td>
+                    <td>{{ home.free_spot }}</td>
+                    <td>{{ home.occupied_spot }}</td>
+                    <td>{{ home.reserved_spot }}</td>
+
                 </tr>
 
                 </tbody>
+
+
             </table>
 
         </article>

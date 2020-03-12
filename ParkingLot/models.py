@@ -87,3 +87,12 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     type = db.Column(db.String(255))
     isArrive = db.Column(db.Integer)
+
+
+class Home():
+    user_number = 0
+    free_spot = 0
+    reserved_spot = 0
+    occupied_spot = 0
+
+
