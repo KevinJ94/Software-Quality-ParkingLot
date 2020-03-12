@@ -92,16 +92,25 @@ def makeReservation():
         start = request.form.get("start")
         end = request.form.get("end")
         user = User.query.filter_by(email=email).first()
-        res = Reservation()
-        res.user = user
-        res.startTime = start
-        res.endTime = end
-        res.status = "Confirmed"
-        res.type = "Normal"
-        res.confirmNum = random.randint(0,1000)
-        db.session.add(res)
-        db.session.commit()
-        return redirect("/?email=" + user.email)
+
+        spots = Spot.query.filter_by(status="empty").all()
+        if len(spots) != 0:
+            res = Reservation()
+            res.user = user
+            res.startTime = start
+            res.endTime = end
+            res.status = "Confirmed"
+            res.type = "Normal"
+            res.confirmNum = random.randint(0, 1000)
+            num = random.randint(0, len(spots))
+            spot = spots[num]
+            spot.status = "reserved"
+            spot.current = user.id
+            db.session.add(res)
+            db.session.commit()
+            return redirect("/?email=" + user.email)
+        else:
+            return redirect("/?email=" + user.email)
 
 
 
@@ -184,15 +193,24 @@ def cancel():
 def arrive():
     email = request.args.get("email")
     user = User.query.filter_by(email=email).first()
-    user.isArrive = 1
-    db.session.commit()
-    return redirect("/?email="+email)
-
+    res = Reservation.query.filter_by(userId=user.id,status="Confirmed").first()
+    spot = Spot.query.filter_by(current=user.id).first()
+    if res:
+        user.isArrive = 1
+        spot.status = "occupied"
+        res.status = "Finished"
+        db.session.commit()
+        return redirect("/?email="+email)
+    else:
+        return redirect("/?email=" + email)
 @app.route('/depart', methods=['GET', 'POST'])
 def depart():
     email = request.args.get("email")
     user = User.query.filter_by(email=email).first()
     user.isArrive = 0
+    spot = Spot.query.filter_by(current=user.id).first()
+    spot.status = "empty"
+    spot.current = None
     db.session.commit()
     return redirect("/?email="+email)
 

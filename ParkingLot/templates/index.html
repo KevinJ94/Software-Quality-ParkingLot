@@ -125,8 +125,10 @@
                     <li class="mui-table-view-cell mui-collapse">
                     {% if res.status == "Confirmed" %}
                         <a class="mui-navigate-right" href="#">Reservation {{ res.id }}<span class="mui-badge mui-badge-danger">{{ res.status }}</span></a>
-                    {% else %}
+                    {% elif res.status == "Canceled" %}
                         <a class="mui-navigate-right" href="#">Reservation {{ res.id }}<span class="mui-badge mui-badge-primary">{{res.status}}</span></a>
+                    {% else %}
+                        <a class="mui-navigate-right" href="#">Reservation {{ res.id }}<span class="mui-badge mui-badge-success">{{res.status}}</span></a>
                     {% endif %}
 
                         <div class="mui-collapse-content">

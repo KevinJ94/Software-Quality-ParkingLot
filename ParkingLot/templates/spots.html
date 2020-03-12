@@ -52,7 +52,7 @@
             {#	</nav>#}
             <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
                 <ul class="cl">
-                    <li>{{email}}</li>
+                    <li>{{ email }}</li>
                     <li class="dropDown dropDown_hover"><a href="#" class="dropDown_A">Action<i class="Hui-iconfont">&#xe6d5;</i></a>
                         <ul class="dropDown-menu menu radius box-shadow">
                             {#							<li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>#}
@@ -132,14 +132,14 @@
                         <i class="Hui-iconfont">&#xe600;</i> New Spot</a>
                 </form>
 
-                <span class="r">Total Spots：<strong>{{num}}</strong> </span>
+                <span class="r">Total Spots：<strong>{{ num }}</strong> </span>
             </div>
 
             <div class="mt-20">
                 <table class="table table-border table-bordered table-hover table-bg table-sort">
                     <thead>
                     <tr class="text-c">
-{#                        <th width="25"><input type="checkbox" name="" value=""></th>#}
+                        {#                        <th width="25"><input type="checkbox" name="" value=""></th>#}
                         <th width="80">ID</th>
                         <th width="100">Number</th>
                         <th width="100">Current</th>
@@ -150,15 +150,27 @@
                     <tbody>
                     {% for spot in spots %}
                         <tr class="text-c">
-{#                        <td><input type="checkbox" value="1" name=""></td>#}
-                        <td>{{ spot.id }}</td>
-                        <td>{{ spot.number }}</td>
+                            {#                        <td><input type="checkbox" value="1" name=""></td>#}
+                            <td>{{ spot.id }}</td>
+                            <td>{{ spot.number }}</td>
                             <td>{{ spot.current }}</td>
-                        <td class="td-status"><span class="label label-success radius">{{ spot.status }}</span></td>
-                        <td class="td-manage"><a title="del" href="/del_spot?id={{ spot.id }}&email={{ email }}"  class="ml-5"
-                                                 style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
-                        </td>
-                    </tr>
+                            {% if spot.status == "reserved" %}
+                                <td class="td-status"><span class="label label-danger radius">{{ spot.status }}</span>
+                                </td>
+                            {% elif spot.status == "occupied" %}
+                                <td class="td-status"><span class="label label-success radius">{{ spot.status }}</span>
+                                </td>
+                            {% else %}
+                                <td class="td-status"><span class="label label-primary radius">{{ spot.status }}</span>
+                                </td>
+                            {% endif %}
+
+                            <td class="td-manage"><a title="del" href="/del_spot?id={{ spot.id }}&email={{ email }}"
+                                                     class="ml-5"
+                                                     style="text-decoration:none"><i
+                                    class="Hui-iconfont">&#xe6e2;</i></a>
+                            </td>
+                        </tr>
                     {% endfor %}
 
                     </tbody>
@@ -180,9 +192,9 @@
 <script type="text/javascript" src="../static/H-ui.admin.page/lib/datatables/1.10.15/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="../static/H-ui.admin.page/lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
-            function formSub() {
-                document.getElementById("number-form").submit();
-            }
+    function formSub() {
+        document.getElementById("number-form").submit();
+    }
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>
