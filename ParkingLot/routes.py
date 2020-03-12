@@ -196,10 +196,40 @@ def depart():
     db.session.commit()
     return redirect("/?email="+email)
 
-@app.route('/admin')
+@app.route('/admin', methods=['GET', 'POST'])
 def admin():
-   return render_template("admin.html")
+    user_email = session.get(request.args.get("email"))
+    user = User.query.filter_by(email=user_email).first()
+    if user_email:
+        return render_template("admin.html", email=user_email)
+    else:
+        return render_template("admin_login.html")
 
-@app.route('/admin_login')
+
+@app.route('/admin_login', methods=['GET', 'POST'])
 def admin_login():
-   return render_template("admin_login.html")
+    if request.method == "GET":
+        return render_template("admin_login.html")
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+        print(email,password)
+        user = User.query.filter_by(email=email).first()
+
+        if user.password == password and user.type == '1':
+            session[user.email] = user.email
+            return redirect("/admin?email=" + user.email)
+        else:
+            return redirect("/admin_login")
+
+@app.route('/admin_logout')
+def admin_logout():
+    session.clear()
+    return render_template("login.html")
+
+@app.route('/spots', methods=['GET', 'POST'])
+def spots():
+    if request.method == "GET":
+        return render_template("spots.html")
+    if request.method == "POST":
+        pass
