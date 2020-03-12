@@ -213,7 +213,6 @@ def admin_login():
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
-        print(email,password)
         user = User.query.filter_by(email=email).first()
 
         if user.password == password and user.type == '1':
@@ -225,11 +224,40 @@ def admin_login():
 @app.route('/admin_logout')
 def admin_logout():
     session.clear()
-    return render_template("login.html")
+    return render_template("admin_login.html")
 
 @app.route('/spots', methods=['GET', 'POST'])
 def spots():
     if request.method == "GET":
-        return render_template("spots.html")
+        email = request.args.get("email")
+        spots_list = Spot.query.all()
+        return render_template("spots.html",spots = spots_list,num = len(spots_list),email = email)
     if request.method == "POST":
         pass
+
+@app.route('/add_spots', methods=['GET', 'POST'])
+def add_spots():
+    if request.method == "POST":
+        number = request.form.get("number")
+        email = request.form.get("email")
+        print(email)
+        if number:
+            spot = Spot()
+            spot.status = "empty"
+            spot.current = None
+            spot.number = number
+            db.session.add(spot)
+            db.session.commit()
+            return redirect("/spots?email="+email)
+        else:
+            return redirect("/spots?email="+email)
+
+@app.route('/del_spot', methods=['GET', 'POST'])
+def del_spots():
+    id = request.args.get("id")
+    email = request.args.get("email")
+    print(email)
+    spot = Spot.query.filter_by(id=id).first()
+    db.session.delete(spot)
+    db.session.commit()
+    return redirect("/spots?email="+email)

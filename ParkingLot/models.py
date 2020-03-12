@@ -63,6 +63,7 @@ class Spot(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.String(255))
     status = db.Column(db.String(255))
+    current = db.Column(db.Integer)
 
 
 class Transaction(db.Model):
