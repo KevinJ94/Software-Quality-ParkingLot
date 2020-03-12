@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Hello MUI</title>
+    <title>Parking Lot</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -168,7 +168,8 @@
     <div id="tabbar-with-contact" class="mui-control-content">
         <div class="title"></div>
         <ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
-            <li class="mui-table-view-cell">
+            {% for billing in billings %}
+                <li class="mui-table-view-cell">
                 <div class="mui-slider-cell">
                     <div class="oa-contact-cell mui-table">
                         <div class="oa-contact-avatar mui-table-cell">
@@ -176,8 +177,8 @@
                         </div>
                         <div class="oa-contact-content mui-table-cell">
                             <div class="mui-clearfix">
-                                <h4 class="oa-contact-name">March 2020 </h4>
-                                <span class="mui-badge mui-badge-primary">status</span>
+                                <h4 class="oa-contact-name">{{billing.month}} / {{billing.year}} </h4>
+                                <span class="mui-badge mui-badge-primary">${{ billing.total }}</span>
                             </div>
                             <p class="oa-contact-email mui-h6">
                             </p>
@@ -185,6 +186,8 @@
                     </div>
                 </div>
             </li>
+            {% endfor %}
+
         </ul>
     </div>
     <div id="tabbar-with-map" class="mui-control-content">

@@ -1,6 +1,7 @@
+import datetime
 import json
 import random
-
+import time
 from flask import render_template, url_for, redirect, request, session
 from ParkingLot import app, db
 from ParkingLot.models import *
@@ -28,12 +29,13 @@ def root():
     user = User.query.filter_by(email=user_email).first()
     if user_email:
         res_list = Reservation.query.join(User).filter(User.email == user_email).all()
+        billing_list = Billing.query.filter_by(userId = user.id, year = str(datetime.datetime.now().year),month=str(datetime.datetime.now().month)).all()
         can_res = True
         for res in res_list:
             if res.status == "Confirmed":
                 can_res = False
                 break
-        return render_template("index.html", email=user_email, reslist=res_list,user =user,canres = can_res)
+        return render_template("index.html", email=user_email, reslist=res_list,user =user,canres = can_res,billings = billing_list)
     else:
         return render_template("login.html")
 
@@ -92,7 +94,17 @@ def makeReservation():
         start = request.form.get("start")
         end = request.form.get("end")
         user = User.query.filter_by(email=email).first()
-
+        billing = Billing.query.filter_by(userId=user.id,year = str(datetime.datetime.now().year),month=str(datetime.datetime.now().month)).first()
+        if not billing:
+            billing = Billing()
+            billing.year = str(datetime.datetime.now().year)
+            billing.month = str(datetime.datetime.now().month)
+            billing.status = "started"
+            billing.createTime = datetime.datetime.now()
+            billing.user = user
+            billing.total = 0
+            db.session.add(billing)
+            db.session.commit()
         spots = Spot.query.filter_by(status="empty").all()
         if len(spots) != 0:
             res = Reservation()
@@ -102,7 +114,7 @@ def makeReservation():
             res.status = "Confirmed"
             res.type = "Normal"
             res.confirmNum = random.randint(0, 1000)
-            num = random.randint(0, len(spots))
+            num = random.randint(0, len(spots)-1)
             spot = spots[num]
             spot.status = "reserved"
             spot.current = user.id
@@ -199,6 +211,14 @@ def arrive():
         user.isArrive = 1
         spot.status = "occupied"
         res.status = "Finished"
+        tra = Transaction()
+        tra.createTime = datetime.datetime.now()
+
+        seconds = (res.endTime - res.startTime).seconds
+        tra.expectedDuration = seconds
+        tra.status = "started"
+        tra.user = user
+        db.session.add(tra)
         db.session.commit()
         return redirect("/?email="+email)
     else:
@@ -211,6 +231,12 @@ def depart():
     spot = Spot.query.filter_by(current=user.id).first()
     spot.status = "empty"
     spot.current = None
+    tra = Transaction.query.filter_by(userId=user.id,endTime=None).first()
+    tra.status = "ended"
+    tra.endTime = datetime.datetime.now()
+    billing = Billing.query.filter_by(userId=user.id, year=str(datetime.datetime.now().year),
+                                      month=str(datetime.datetime.now().month)).first()
+    billing.total += (int(tra.expectedDuration)/60)*0.03
     db.session.commit()
     return redirect("/?email="+email)
 

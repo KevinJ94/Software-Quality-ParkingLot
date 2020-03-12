@@ -18,7 +18,8 @@ class Billing(db.Model):
     status = db.Column(db.String(255))
     description = db.Column(db.String(255))
     userId = db.Column(db.ForeignKey('user.id'), index=True)
-
+    year = db.Column(db.String(255))
+    month = db.Column(db.String(255))
     user = db.relationship('User', primaryjoin='Billing.userId == User.id', backref='billings')
 
 
@@ -75,7 +76,6 @@ class Transaction(db.Model):
     endTime = db.Column(db.DateTime)
     expectedDuration = db.Column(db.String(255))
     userId = db.Column(db.ForeignKey('user.id'), index=True)
-
     user = db.relationship('User', primaryjoin='Transaction.userId == User.id', backref='transactions')
 
 
