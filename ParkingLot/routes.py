@@ -56,6 +56,9 @@ def checklogin():
     password = request.form.get("password")
     user = User.query.filter_by(email=email).first()
 
+    if user is None:
+        return redirect("/login")
+
     if user.password == password:
         session[user.email] = user.email
         return redirect("/?email=" + user.email)

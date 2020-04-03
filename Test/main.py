@@ -65,6 +65,18 @@ class UnitTestCase(unittest.TestCase):
         response = self.client.get('/spots')
         self.assertEqual(response.status_code, 200)
 
+    def test_checklogin_page(self):
+        self.client.post('/checklogin', data=dict(
+            email='test@test.com',
+            password='123456'
+        ), follow_redirects=True)
+
+        self.client.post('/checklogin', data=dict(
+            email='xx@xx.com',
+            password='xxx'
+        ), follow_redirects=True)
+
+
 
 if __name__ == '__main__':
     unittest.main()
