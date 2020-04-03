@@ -32,5 +32,5 @@ Appendix:
 
 Deliverable 2-3:
 all test code and script files are listed in "Test" folder.
-Integration Test --> 'Integration.sh'
-Unit Test --> 'main.py'
+Integration Test --> `Integration.sh`
+Unit Test --> `main.py`
