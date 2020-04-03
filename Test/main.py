@@ -35,6 +35,10 @@ class UnitTestCase(unittest.TestCase):
     def test_reg_page(self):
         response = self.client.get('/reg')
         self.assertEqual(response.status_code, 200)
+        self.client.post('/reg', data=dict(
+            email='xx@xx.com',
+            password='xxx'
+        ), follow_redirects=True)
 
     def test_makeRes_page(self):
         response = self.client.get('/makeRes')
@@ -50,8 +54,14 @@ class UnitTestCase(unittest.TestCase):
 
 
     def test_admin_page(self):
+        response = self.client.get('/admin?email=test@test.com')
+        self.assertEqual(response.status_code, 200)
         response = self.client.get('/admin')
         self.assertEqual(response.status_code, 200)
+        self.client.post('/admin', data=dict(
+            email='test@test.com',
+            password='123456'
+        ), follow_redirects=True)
 
     def test_admin_login_page(self):
         response = self.client.get('/admin_login')
