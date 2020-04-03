@@ -28,3 +28,10 @@ Appendix:
 1.	We recommend you use Navicat to import sql file to database.
 2.	For users, we suggest you need use Chrome to visit, and press F12, then change to mobile mode to get better experience. 
 3.	For admin, you can visit as normal. 
+
+
+Deliverable 2-3:
+
+all test code and script files are listed in "Test" folder.
+Integration Test --> `Integration.sh`
+Unit Test --> `main.py`
